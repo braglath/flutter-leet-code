@@ -127,3 +127,23 @@ It is a code generation tool used with Freezed(models), JSON serialization, Rive
 
 ## How does setState work
 It marks the widget as dirty then triggers build(), only that widget subtree gets rebulds. not for large or shared state
+
+## When does an app rebuild & how to optimize?
+
+**Rebuld triggers**
+
+- setState
+- Provider/Riverpod state change
+- Parent widget rebuld
+- MediaQuery change
+- Theme change
+
+**Optimization techniques**
+
+- use const widgets
+- split widgets into smaller widgets
+- use consumer
+- avoid heavy logic in build()
+- cache values in initState
+- use ListView.builder
+- avoid rebuilding entire screen
