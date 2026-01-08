@@ -1,0 +1,72 @@
+# Flutter Questions
+
+## security measures
+
+start with local security measures like
+local authentication, Https, detecting jailbreak and tampered devices,
+obtaining only necessary permissions, ssl pinning, background snapshot protection
+Code obfuscation, Encrypting api keys, payloads and user data.
+
+## Difference between start debugging Vs Start without debugging
+
+When you start with debugging it allows you to add break points and step through the code as it will load the debugging symbols.
+If you start without debugging then the symbols dont get loaded so you cannot step through the code with the break points,
+much like a release build.
+
+## Void vs Future vs Stream
+
+Void does not return anything, it does not return null. even if the code has return null; we cannot obtain the returned value.
+The difference is that Futures are about one-shot request/response (I ask, there is a delay,
+I get a notification that my Future is ready to collect, and I'm done!)
+whereas Streams are a continuous series of responses to a single request I ask, there is a delay then I keep getting responses until the stream dries up.
+
+## Stopwatch Class
+
+A stopwatch which measures time while it's running.
+A stopwatch is either running or stopped. It measures the elapsed time that passes while the stopwatch is running.
+
+## What’s Linting?
+
+Linting is the process of checking the source code for Programmatic as well as Stylistic errors and unformatted code.
+It’s helpful in identifying some common and uncommon mistakes that are made during coding like logical errors, unused variables,
+empty if-else statements among others.
+Linter/Lint is a tool that analyzes source code to flag programming errors, bugs, stylistic errors, and suspicious constructs.
+It supports verifying code quality. we use analysis_options.yaml file to define the lint rules. we use flutter_lints package
+
+## Extension Methods
+
+Extension methods add functionality to existing libraries.
+
+## Dart does not support multiple class inheritance directly to avoid complexity and ambiguity issues like the diamond problem
+
+Instead, you can achieve similar functionality using mixins and implementing multiple interfaces
+
+```dart
+
+mixin CanFly {
+void fly() {
+print('I can fly!');
+}
+}
+
+mixin CanSwim {
+void swim() {
+print('I can swim!');
+}
+}
+
+class Duck with CanFly, CanSwim {
+// The Duck class now has both fly() and swim() methods.
+void quack() {
+print('Quack quack!');
+}
+}
+
+void main() {
+var duck = Duck();
+duck.fly();
+duck.swim();
+duck.quack();
+}
+
+
