@@ -642,3 +642,36 @@ factory Logger() {
 - Because factory can return existing instance
 - It doesn’t always create new object
 - Useful for parsing, caching, singleton, polymorphism
+
+## What does % mean in Dart
+
+% is the modulus (remainder) operator, it gives remainder after division
+
+```dart
+bool isEven(int input)=> input % 2 == 0; // ==0 true, != 0 false
+// dart uses bitwise checks internally for detecting a int is odd or even and has extension isEven
+```
+
+## What are Bitwise Checks
+
+Bitwise operations work directly on the binary representation (0s and 1s) of numbers Computers store integers in binary.
+
+- 4 -> 100 [last bit - 0]
+- 5 -> 101 [last bit - 1]
+- 6 -> 110 [last bit - 0]
+- 7 -> 111 [last bit - 1]
+
+If the last bit is 0, it's even; if 1, it's odd.
+
+## Why are Bitwise Checks Used?
+
+- Faster (very slightly)
+- Bitwise operations are extremely low-level and very fast.
+
+**Used in**
+
+- Performance-critical code
+- Game engines
+- System-level programming
+- Memory manipulation
+- Flutter engine internals

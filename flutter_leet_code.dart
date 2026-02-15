@@ -2,6 +2,7 @@ void main() {
   String x = "hello world";
   String a = "silent";
   String b = "listen";
+  int c = 5;
   List<int> l = [3, 4, 6, 2, 3, 6, 4];
   List<int> l2 = [0, 0, 3, 2, 0, 5, 0, 3, 4, 0];
 
@@ -15,6 +16,10 @@ void main() {
   print('is anagram: ' + isAnagram(a, b).toString());
   print('first non repeating: ' + firstNonRepeating(x).toString());
   print("-------------------------------\n");
+
+  // integers
+  print("/// INTEGER METHODS ///");
+  print('is Even number: ' + isEven(c).toString());
 
   // Arrays & Lists
   print("/// ARRAY METHODS ///");
@@ -111,6 +116,9 @@ String? firstNonRepeating(String input) {
   // every char is repeating
   return null;
 }
+
+// integers
+bool isEven(int input) => input % 2 == 0;
 
 // Arrays & List
 List<int> bubbleSort(List<int> input) {
