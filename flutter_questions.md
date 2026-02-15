@@ -322,3 +322,323 @@ class _MyTabState extends State<MyTab>
   bool get wantKeepAlive => true;
 }
 ```
+
+## Generics in flutter
+
+Generics allow you to write type-safe reusable code. Instead of fixing a type, you make it flexible using <T>
+
+```dart
+class Box<T> {
+  final T value;
+  Box(this.value);
+}
+```
+
+## How to Implement Concurrency in Flutter
+
+- Async/Await
+- Futures in parallel
+
+```dart
+await Future.wait([
+  fetchUser(),
+  fetchGyms(),
+  fetchTrainers(),
+]);
+```
+
+- streams
+
+```dart
+Stream<int> counter() async* {
+  for (int i = 0; i < 5; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+```
+
+- Isolates (True Parallelism) - For CPU-heavy tasks (image compression, encryption)
+
+```dart
+compute(parseJson, jsonString);
+```
+
+## What is yield in Flutter?
+
+yield is used inside a generator function. It emits values in a Stream
+
+```dart
+Stream<int> numbers() async* {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+```
+
+## How to Solve a Bug / Crash from Crash Report
+
+- Identify the crash source (firebase crashlytics/stack trace)
+- Analyze stack trace
+- Reproduce (check device, check OS version, check user data, check network condition)
+- Fix and Add logging
+
+## Dio cancel token
+
+CancelToken is a feature of the dio HTTP client that allows you to cancel an ongoing network request before it completes.
+A CancelToken is an object that: Is attached to a request, Can cancel that request anytime, Throws a DioException with type cancel
+
+It is especially useful in:
+
+- Screen disposal (user navigates back)
+- Search APIs (cancel previous request when user types new text)
+- Avoiding memory leaks
+- Preventing unnecessary API calls
+
+```dart
+import 'package:dio/dio.dart';
+
+final dio = Dio();
+final cancelToken = CancelToken();
+
+void fetchData() async {
+  try {
+    final response = await dio.get(
+      'https://api.example.com/data',
+      cancelToken: cancelToken,
+    );
+
+    print(response.data);
+  } catch (e) {
+    if (e is DioException && CancelToken.isCancel(e)) {
+      print("Request was cancelled");
+    } else {
+      print("Other error: $e");
+    }
+  }
+}
+
+void cancelRequest() {
+  cancelToken.cancel("User navigated back");
+}
+```
+
+## Flutter frame rendering pipeline
+
+Flutter renders at 60 FPS, meaning one frame must complete in: 1000ms / 60 = 16.67ms.
+If build + layout + paint exceed 16ms → dropped frame → jank
+
+**Build Phase**
+
+widgets rebuild, creates new element tree
+
+**Layout Phase**
+
+calculates size & position
+
+**Pain Phase**
+
+creates layer tree
+
+**Rasterization**
+
+converts layers to pixels
+
+## What Causes Jank?
+
+- Heavy computation in build()
+- Large lists without ListView.builder
+- JSON parsing on main isolate
+- Excessive rebuilds
+
+## Secure local storage
+
+flutter_secure_storage
+
+```dart
+final storage = FlutterSecureStorage();
+await storage.write(key: "token", value: token);
+```
+
+## Handle/detect app state (background, foreground)
+
+```dart
+class LifecycleHandle with WidgetsBindingObserver{
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state){
+    if(state == AppLifecycleState.paused){
+      // handle app in background
+    }
+  }
+}
+```
+
+## Unicode Characters
+
+unicode is a universal character set standard. It assigns a unique number to ever character
+₹ → U+20B9
+😀 → U+1F600
+Unicode = character → unique number mapping
+
+## UTF - 8
+
+is an encoding format that stores unicode characters as bytes
+
+- Uses 1–4 bytes per character
+- Backward compatible with ASCII
+- Most used encoding on the web
+
+₹ → 3 bytes
+😀 → 4 bytes
+
+```dart
+import 'dart:convert';
+
+final bytes = utf8.encode("Hello");
+final text = utf8.decode(bytes);
+```
+
+## AES vs RSA Encryption
+
+**AES (Advanced Encryption Standard)**
+
+- Symmetric encryption
+- Same key for encrypt & decrypt
+- Very fast
+- Used for large data
+
+App encrypts local data with a secret key.
+
+**RSA (Rivest–Shamir–Adleman)**
+
+- Asymmetric encryption
+- Public key encrypts
+- Private key decrypts
+- Slower
+
+Used for secure key exchange
+
+**Real-world Usage (Important for interviews)**
+
+In HTTPS:
+
+- RSA → securely exchanges AES key
+- AES → encrypts actual data
+
+👉 AES = speed
+
+👉 RSA = secure key sharing
+
+## How Flutter Secure Storage Works
+
+Plugin: flutter_secure_storage
+
+On Android, uses: Android Keystore
+
+AES key stored in hardware-backed keystore
+
+On iOS, uses: Keychain Services
+
+**Best for**
+
+- Access tokens
+- Refresh tokens
+- Encryption keys
+
+**Not for**
+
+- Large data
+- Caching
+
+## Where to Store Tokens?
+
+Access Token → Secure storage
+Refresh Token → Secure storage
+User profile → Local DB (Hive/Drift)
+
+## Different Constructors in Dart
+
+**Default constructor**
+
+```dart
+class User{
+  User();
+}
+```
+
+**Name constructor**
+
+```dart
+User.admin();
+```
+
+**Constant constructor**
+
+```dart
+const User(this.name);
+```
+
+**Factory constructor**
+
+```dart
+factory User.fromJson(Map<String, dynamic> json) => User(name: json["name"])
+```
+
+**Redirecting constructor**
+
+```dart
+User.guest() : this("Guest");
+```
+
+## Types of Parameters in Dart Constructors
+
+**Positional**
+
+```dart
+User(String name)
+```
+
+**Named**
+
+```dart
+User({required String name})
+```
+
+**Optional positional**
+
+```dart
+User([String? name])
+```
+
+**Required named**
+
+```dart
+User({required String name})
+```
+
+**Default values**
+
+```dart
+User({this.role = "user"})
+```
+
+## Use of Factory Method
+
+Factory constructor is used when:
+
+- You want to return cached instance
+- You want different subclasses
+- You want validation before creating object
+- Singleton pattern
+
+```dart
+factory Logger() {
+  return _instance;
+}
+```
+
+**Why factory over normal constructor?**
+
+- Because factory can return existing instance
+- It doesn’t always create new object
+- Useful for parsing, caching, singleton, polymorphism
