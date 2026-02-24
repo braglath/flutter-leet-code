@@ -13,7 +13,7 @@ When you start with debugging it allows you to add break points and step through
 If you start without debugging then the symbols dont get loaded so you cannot step through the code with the break points,
 much like a release build.
 
-## Void vs Future vs Stream
+## void vs Future vs Stream
 
 - **Void** does not return anything, it does not return null. even if the code has return null; we cannot obtain the returned value.
 - **Futures** are about one-shot request/response (I ask, there is a delay,
@@ -127,7 +127,7 @@ _flutter pub run build_runner build_
 
 ## How does setState work
 
-It marks the widget as dirty then triggers build(), only that widget subtree gets rebulds. not for large or shared state
+It marks the widget as dirty then triggers build(), only that widget subtree gets rebuilds. not for large or shared state. setState() does NOT immediately rebuild. Multiple setState() calls in one frame → batched.
 
 ## When does an app rebuild & how to optimize?
 
@@ -718,3 +718,184 @@ abstract class BatteryApi {
 final api = BatteryApi();
 int level = await api.getBatteryLevel();
 ```
+
+## How does Flutter Add-to-App work?
+
+Add-to-App embeds Flutter inside existing native app.
+
+**Used when:**
+
+- Migrating large native apps gradually
+- Sharing modules between platforms
+- Two approaches:
+- FlutterActivity / FlutterFragment (Android)
+- FlutterViewController (iOS)
+
+**Communication via:**
+
+- Platform Channels
+- MethodChannel
+- EventChannel
+- Pigeon (type-safe communication)
+
+## Explain Widget vs Element vs RenderObject in detail
+
+**Widget**
+
+- Immutable configuration
+- Lightweight
+- Recreated frequently
+
+**Element**
+
+- Bridge between widget & render object
+- Holds state
+- Manages lifecycle
+
+**RenderObject**
+
+- Performs layout & paint
+- Heavy object
+- Rarely recreated
+
+Widget -> Element -> RenderObject
+
+## When should you use Keys? What types exist?
+
+Used when Flutter needs help identifying widgets.
+
+**Types:**
+
+- ValueKey (reordering list item, when item has stable ID like index from live view builder, preserving state in list)
+
+```dart
+ValueKey(123)
+ValueKey('1') == ValueKey('1') // true
+```
+
+- ObjectKey (use when your object overrides == and hashCode)
+
+```dart
+@freezed
+class User with _$User {
+  const factory User({required String id}) = _User;
+}
+ObjectKey(userObject)
+ObjectKey(user1) == ObjectKey(user2)
+```
+
+- UniqueKey (Always unique. Never equal to anything else)
+
+```dart
+UniqueKey()
+```
+
+- GlobalKey (expensive!) (validating form, accessing widget state anywhere, preserving state even if position changes)
+
+```dart
+final formKey = GlobalKey<FormState>();
+Form(
+  key: formKey,
+);
+```
+
+**Use case:**
+
+- Reordering list items
+- Preserving state
+- Form validation
+
+Avoid overusing GlobalKey (memory + performance cost)
+
+## What challenges exist in Add-to-App?
+
+- Multiple FlutterEngine management
+- Memory overhead
+- App lifecycle sync
+- Navigation sync with native
+- Plugin registration issues
+
+**Best practice:**
+
+- Use cached FlutterEngine
+- Prewarm engine
+- Control lifecycle carefully
+
+## How do you prevent unnecessary rebuilds in Riverpod?
+
+- Use select()
+- Split providers
+- Use ref.watch carefully
+- Avoid watching large objects
+
+```dart
+ref.watch(userProvider.select((u) => u.name));
+```
+
+## Isolate vs Compute
+
+**compute():**
+
+```dart
+final result = await compute(parseJson, jsonString);
+```
+
+**What it does:**
+
+- Spawns temporary isolate
+- Runs function
+- Returns result
+- Kills isolate
+
+**Use when:**
+
+- Short CPU-heavy task
+- JSON parsing
+- Image processing
+
+**Limitation:**
+
+- Must be top-level/static function
+- No access to class instance
+- Not good for long-running background tasks
+
+**Manual Isolate:**
+
+```dart
+Isolate.spawn(myFunction, sendPort);
+```
+
+**Use when:**
+
+- Long-running background processing
+- Streaming data
+- Continuous tasks
+- Background service
+
+**Why?**
+
+- You manage lifecycle
+- Reusable isolate
+- Better control
+
+## What is select() in Riverpod?
+
+**Problem?**
+If any field changes -> whole widget rebuilds
+
+```dart
+ref.watch(userProvider);
+```
+
+**Solution: select():**
+Now widget rebuilds ONLY if name changes.
+
+```dart
+ref.watch(userProvider.select((user) => user.name));
+```
+
+**Use select for:**
+
+- Performance optimization
+- Large state objects
+- List item widgets
