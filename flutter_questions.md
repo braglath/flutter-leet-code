@@ -675,3 +675,46 @@ If the last bit is 0, it's even; if 1, it's odd.
 - System-level programming
 - Memory manipulation
 - Flutter engine internals
+
+## what is pigeon in flutter
+
+Pigeon is a code generation tool used in Flutter to create type-safe communication between Flutter (Dart) and native platforms (Android/iOS).
+
+It helps you avoid writing manual MethodChannel boilerplate code.
+
+**Why Pigeon is Needed**
+
+In Flutter, when you want to call native code (like Bluetooth, NFC, camera custom APIs, smart lock SDKs, etc.), you usually use: MethodChannel, EventChannel, BasicMessageChannel
+
+**But:**
+
+- ❌ It uses dynamic types (Map, dynamic)
+- ❌ No compile-time safety
+- ❌ Easy to break during refactoring
+- ❌ Hard to maintain in enterprise apps
+
+👉 Pigeon solves this by generating strongly-typed APIs.
+
+**How Pigeon Works**
+
+- You define a Dart file with API definitions.
+- Pigeon generates:
+- Dart code
+- Kotlin/Java code (Android)
+- Swift/Objective-C code (iOS)
+- You implement the native side.
+- Flutter calls native methods like normal Dart functions.
+
+```dart
+import 'package:pigeon/pigeon.dart';
+
+@HostApi()
+abstract class BatteryApi {
+  int getBatteryLevel();
+}
+
+// Call from Flutter
+
+final api = BatteryApi();
+int level = await api.getBatteryLevel();
+```
