@@ -20,3 +20,17 @@ Defined in AndroidManifest.xml
 
 Android build system
 
+## How do you handle ANRs on Android?
+
+ANR = App Not Responding
+
+**Causes:**
+
+- Blocking main thread
+- Heavy synchronous work
+
+**Fix:**
+
+- Move work to isolate
+- Avoid synchronous disk IO
+- Optimize startup time

@@ -13,17 +13,42 @@ When you start with debugging it allows you to add break points and step through
 If you start without debugging then the symbols dont get loaded so you cannot step through the code with the break points,
 much like a release build.
 
-## Void vs Future vs Stream
+## void vs Future vs Stream
 
 - **Void** does not return anything, it does not return null. even if the code has return null; we cannot obtain the returned value.
+
+```dart
+void addCounter(){
+  return null; // a void does not return null, we cannot obtain the returned value
+}
+```
+
 - **Futures** are about one-shot request/response (I ask, there is a delay,
-  I get a notification that my Future is ready to collect, and I'm done!)
+
+```dart
+Future<String> fetchUserName() async {
+  await Future.delayed(Duration(seconds: 2));
+  return "Bragu";
+}
+```
+
+I get a notification that my Future is ready to collect, and I'm done!)
+
 - **Streams** are a continuous series of responses to a single request (I ask, there is a delay then I keep getting responses until the stream dries up.)
+
+```dart
+Stream<int> counterStream() async* {
+  for (int i = 1; i <= 5; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+```
 
 ## Stopwatch Class
 
 A stopwatch which measures time while it's running.
-A stopwatch is either running or stopped. It measures the elapsed time that passes while the stopwatch is running.
+A stopwatch is either be running or stopped. It measures the elapsed time that passes while the stopwatch is running.
 
 ## What’s Linting?
 
@@ -37,9 +62,39 @@ It supports verifying code quality. we use analysis_options.yaml file to define 
 
 Extension methods add functionality to existing libraries.
 
-## Dart does not support multiple class inheritance directly to avoid complexity and ambiguity issues like the diamond problem
+```dart
+extension ConvertString on String{
+  int get toInt => int.parse(this);
+}
+```
 
-Instead, you can achieve similar functionality using mixins and implementing multiple interfaces
+## Why dart does not allow multiple inheritance
+
+To avoid complexity and ambiguity issues like the diamond problem.
+
+```dart
+class A {
+  void sayHello() => print("Hello from A");
+}
+
+class B extends A {}
+
+class C extends A {}
+
+class D extends B, C {} // ambiguous
+```
+
+- B inherits sayHello()
+- C inherits sayHello()
+- D inherits both B and C
+
+Which sayHello() should D use?
+
+This is called the **Diamond Problem**.
+
+## Mixin
+
+Dart does not support multiple class inheritance directly to avoid complexity and ambiguity issues like the diamond problem. Instead, you can achieve similar functionality using mixins and implementing multiple interfaces
 
 ```dart
 
@@ -95,10 +150,28 @@ _FCM is used to send push notifications to mobile apps._
 - Background → onMessageOpenedApp
 - Terminated → getInitialMessage
 
+```dart
+void setupInteractedMessage() async {
+    // When app is in foreground
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("Foreground message: ${message.notification?.title}");
+    });
+
+    // When app is opened from background (user taps notification)
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print("Opened from background: ${message.notification?.title}");
+    });
+
+    // When app is terminated and opened by notification
+    RemoteMessage? initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+  }
+```
+
 ## ValueNotifier vs ChangeNotifier
 
 - **ValueNotifier** holds a single value, it notifies listeners when the value changes. Its lightweight
-- **ChangeNotifier** can manage multiple values, show call notifyListeners() manually. used by provider/riverpod
+- **ChangeNotifier** can manage multiple values, should call notifyListeners() manually. used by provider/riverpod
 
 ## What are inherited widgets
 
@@ -114,20 +187,75 @@ It is used to share data down the widget tree, avoids passing data using contruc
 
 - **HTTP** - basic REST calls, less configuration
 
+```dart
+await http.get(
+    Uri.parse('https://jsonplaceholder.typicode.com/posts/1'),
+  );
+```
+
 - **Dio** - advanced HTTP client, supports (interceptors, cancel request, retry, timeout, multipart upload), Dio is preferred for production apps
+
+```dart
+ await dio.get(
+      'https://jsonplaceholder.typicode.com/posts/1',
+    );
+```
 
 ## What is Dio Interceptor
 
 It lets you to intercept request and responses. Use cases - Add auth token, log api call, handle errors globally, refresh token
 
+```dart
+import 'package:dio/dio.dart';
+
+class NetworkService {
+  final Dio dio = Dio();
+
+  NetworkService() {
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // 🔹 Add Authorization Header
+          options.headers["Authorization"] = "Bearer my_token";
+
+          print("➡️ REQUEST: ${options.method} ${options.path}");
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          print("✅ RESPONSE: ${response.statusCode}");
+          return handler.next(response);
+        },
+        onError: (DioException e, handler) {
+          print("❌ ERROR: ${e.response?.statusCode}");
+
+          if (e.response?.statusCode == 401) {
+            print("Unauthorized! Token might be expired.");
+          }
+
+          return handler.next(e);
+        },
+      ),
+    );
+  }
+
+  Future<void> fetchPost() async {
+    final response =
+        await dio.get("https://jsonplaceholder.typicode.com/posts/1");
+
+    print(response.data);
+  }
+}
+```
+
 ## What is build_runner and its use case
 
 It is a code generation tool used with Freezed(models), JSON serialization, Riverpod generator, Drift/Floor, Hive
-_flutter pub run build_runner build_
+
+- _flutter pub run build_runner build_
 
 ## How does setState work
 
-It marks the widget as dirty then triggers build(), only that widget subtree gets rebulds. not for large or shared state
+It marks the widget as dirty then triggers build(), only that widget subtree gets rebuilds. not for large or shared state. setState() does NOT immediately rebuild. Multiple setState() calls in one frame → batched.
 
 ## When does an app rebuild & how to optimize?
 
@@ -148,6 +276,7 @@ It marks the widget as dirty then triggers build(), only that widget subtree get
 - cache values in initState
 - use ListView.builder
 - avoid rebuilding entire screen
+- using select() in riverpod
 
 ## What are Method Channels?
 
@@ -718,3 +847,184 @@ abstract class BatteryApi {
 final api = BatteryApi();
 int level = await api.getBatteryLevel();
 ```
+
+## How does Flutter Add-to-App work?
+
+Add-to-App embeds Flutter inside existing native app.
+
+**Used when:**
+
+- Migrating large native apps gradually
+- Sharing modules between platforms
+- Two approaches:
+- FlutterActivity / FlutterFragment (Android)
+- FlutterViewController (iOS)
+
+**Communication via:**
+
+- Platform Channels
+- MethodChannel
+- EventChannel
+- Pigeon (type-safe communication)
+
+## Explain Widget vs Element vs RenderObject in detail
+
+**Widget**
+
+- Immutable configuration
+- Lightweight
+- Recreated frequently
+
+**Element**
+
+- Bridge between widget & render object
+- Holds state
+- Manages lifecycle
+
+**RenderObject**
+
+- Performs layout & paint
+- Heavy object
+- Rarely recreated
+
+Widget -> Element -> RenderObject
+
+## When should you use Keys? What types exist?
+
+Used when Flutter needs help identifying widgets.
+
+**Types:**
+
+- ValueKey (reordering list item, when item has stable ID like index from live view builder, preserving state in list)
+
+```dart
+ValueKey(123)
+ValueKey('1') == ValueKey('1') // true
+```
+
+- ObjectKey (use when your object overrides == and hashCode)
+
+```dart
+@freezed
+class User with _$User {
+  const factory User({required String id}) = _User;
+}
+ObjectKey(userObject)
+ObjectKey(user1) == ObjectKey(user2)
+```
+
+- UniqueKey (Always unique. Never equal to anything else)
+
+```dart
+UniqueKey()
+```
+
+- GlobalKey (expensive!) (validating form, accessing widget state anywhere, preserving state even if position changes)
+
+```dart
+final formKey = GlobalKey<FormState>();
+Form(
+  key: formKey,
+);
+```
+
+**Use case:**
+
+- Reordering list items
+- Preserving state
+- Form validation
+
+Avoid overusing GlobalKey (memory + performance cost)
+
+## What challenges exist in Add-to-App?
+
+- Multiple FlutterEngine management
+- Memory overhead
+- App lifecycle sync
+- Navigation sync with native
+- Plugin registration issues
+
+**Best practice:**
+
+- Use cached FlutterEngine
+- Prewarm engine
+- Control lifecycle carefully
+
+## How do you prevent unnecessary rebuilds in Riverpod?
+
+- Use select()
+- Split providers
+- Use ref.watch carefully
+- Avoid watching large objects
+
+```dart
+ref.watch(userProvider.select((u) => u.name));
+```
+
+## Isolate vs Compute
+
+**compute():**
+
+```dart
+final result = await compute(parseJson, jsonString);
+```
+
+**What it does:**
+
+- Spawns temporary isolate
+- Runs function
+- Returns result
+- Kills isolate
+
+**Use when:**
+
+- Short CPU-heavy task
+- JSON parsing
+- Image processing
+
+**Limitation:**
+
+- Must be top-level/static function
+- No access to class instance
+- Not good for long-running background tasks
+
+**Manual Isolate:**
+
+```dart
+Isolate.spawn(myFunction, sendPort);
+```
+
+**Use when:**
+
+- Long-running background processing
+- Streaming data
+- Continuous tasks
+- Background service
+
+**Why?**
+
+- You manage lifecycle
+- Reusable isolate
+- Better control
+
+## What is select() in Riverpod?
+
+**Problem?**
+If any field changes -> whole widget rebuilds
+
+```dart
+ref.watch(userProvider);
+```
+
+**Solution: select():**
+Now widget rebuilds ONLY if name changes.
+
+```dart
+ref.watch(userProvider.select((user) => user.name));
+```
+
+**Use select for:**
+
+- Performance optimization
+- Large state objects
+- List item widgets
