@@ -114,7 +114,7 @@ class Duck with CanFly, CanSwim {
 // The Duck class now has both fly() and swim() methods.
 void quack() {
 print('Quack quack!');
-}
+}u
 }
 
 void main() {
@@ -132,6 +132,20 @@ createState, initState, didChangeDependencies, build, setState, didUpdateWidget,
 ## Android activity lifecycle
 
 onCrate, onStart, onResume, onPause, onStop, onDestroy, (onRestart)
+
+## Difference Between deactivate() and dispose()
+
+**deactivate():**
+
+- Called when widget is removed from tree temporarily.
+- Might reinsert again.
+- Rarely used.
+
+**dispose():**
+
+- Called permanently.
+- Widget is destroyed.
+- Release resources here.
 
 ## How does FCM (Firebase Cloud Messaging) work?
 
@@ -249,7 +263,7 @@ class NetworkService {
 
 ## What is build_runner and its use case
 
-It is a code generation tool used with Freezed(models), JSON serialization, Riverpod generator, Drift/Floor, Hive
+It is a code generation tool used with Freezed(models), JSON serialization, Riverpod generator, Drift/Floor, Hive, Pigeon
 
 - _flutter pub run build_runner build_
 
@@ -430,6 +444,18 @@ void main() {
 
 Code obfuscation is the process of making applications difficult or impossible to decompile or disassemble, and the retrieved application code more difficult for humans to parse. Application developers must harden the code at various layers.
 
+```dart
+Without obfuscation (readable in decompiled APK)
+    class UserAuthService {
+      Future<void> loginWithEmail(String email, String password) { ... }
+    }
+
+With obfuscation (what attackers see)
+    class a {
+      Future<void> b(String c, String d) { ... }
+    }
+```
+
 ## apk full form
 
 The full form of APK is an Android Application Package. APK is the application file type used in the Android operating system
@@ -565,7 +591,7 @@ widgets rebuild, creates new element tree
 
 calculates size & position
 
-**Pain Phase**
+**Paint Phase**
 
 creates layer tree
 
@@ -822,7 +848,7 @@ In Flutter, when you want to call native code (like Bluetooth, NFC, camera custo
 - ❌ Easy to break during refactoring
 - ❌ Hard to maintain in enterprise apps
 
-👉 Pigeon solves this by generating strongly-typed APIs.
+Pigeon solves this by generating strongly-typed APIs.
 
 **How Pigeon Works**
 
@@ -848,25 +874,6 @@ final api = BatteryApi();
 int level = await api.getBatteryLevel();
 ```
 
-## How does Flutter Add-to-App work?
-
-Add-to-App embeds Flutter inside existing native app.
-
-**Used when:**
-
-- Migrating large native apps gradually
-- Sharing modules between platforms
-- Two approaches:
-- FlutterActivity / FlutterFragment (Android)
-- FlutterViewController (iOS)
-
-**Communication via:**
-
-- Platform Channels
-- MethodChannel
-- EventChannel
-- Pigeon (type-safe communication)
-
 ## Explain Widget vs Element vs RenderObject in detail
 
 **Widget**
@@ -889,7 +896,7 @@ Add-to-App embeds Flutter inside existing native app.
 
 Widget -> Element -> RenderObject
 
-## When should you use Keys? What types exist?
+## When should you use Keys? Types of keys in flutter?
 
 Used when Flutter needs help identifying widgets.
 
@@ -935,6 +942,25 @@ Form(
 - Form validation
 
 Avoid overusing GlobalKey (memory + performance cost)
+
+## How does Flutter Add-to-App work?
+
+Add-to-App embeds Flutter inside existing native app.
+
+**Used when:**
+
+- Migrating large native apps gradually
+- Sharing modules between platforms
+- Two approaches:
+- FlutterActivity / FlutterFragment (Android)
+- FlutterViewController (iOS)
+
+**Communication via:**
+
+- Platform Channels
+- MethodChannel
+- EventChannel
+- Pigeon (type-safe communication)
 
 ## What challenges exist in Add-to-App?
 
@@ -1028,3 +1054,327 @@ ref.watch(userProvider.select((user) => user.name));
 - Performance optimization
 - Large state objects
 - List item widgets
+
+## What are Slivers?
+
+Slivers are scrollable pieces of the UI. The word "sliver" literally means a small, thin piece — in Flutter, it refers to a portion of a scrollable area.
+Normal widgets like ListView and GridView are actually built on top of slivers under the hood. Slivers give you fine-grained control over scrollable layouts that normal widgets can't achieve.
+
+**Why Use Slivers?**
+When you need effects like:
+
+- A collapsing app bar that shrinks on scroll
+- Mixing a grid and a list in one scroll view
+- A pinned/floating header mid-list
+- Custom scroll effects
+
+```dart
+import 'package:flutter/material.dart';
+
+class SliverExample extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: CustomScrollView(   // ← replaces Scaffold body
+        slivers: [
+
+          // 1. Collapsing AppBar
+          SliverAppBar(
+            expandedHeight: 200,
+            floating: false,
+            pinned: true,         // stays visible when collapsed
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text("Slivers Demo"),
+              background: Image.network(
+                "https://picsum.photos/400/200",
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
+          // 2. A normal widget inside a sliver
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                "Featured Items",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+
+          // 3. A Grid
+          SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => Container(
+                color: Colors.blue[100 * ((index % 8) + 1)],
+                child: Center(child: Text("Grid $index")),
+              ),
+              childCount: 6,
+            ),
+          ),
+
+          // 4. A List below the grid (same scroll view!)
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => ListTile(
+                leading: Icon(Icons.star),
+                title: Text("List Item $index"),
+              ),
+              childCount: 10,
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+}
+```
+
+## Sealed Classes in Dart (Flutter)
+
+Introduced in Dart 3.0. A sealed class defines a closed set of subtypes — the compiler knows every possible subtype, enabling exhaustive pattern matching.
+
+- All subtypes must be in the same file
+- Cannot be extended or implemented outside the file
+- Forces you to handle every possible case (like an enum but with data)
+
+```dart
+sealed class ApiState {}
+
+class Loading extends ApiState {}
+
+class Success extends ApiState {
+  final String data;
+  Success(this.data);
+}
+
+class Failure extends ApiState {
+  final String error;
+  Failure(this.error);
+}
+```
+
+## Records in Dart 3.0
+
+allows to return multiple values with different data types
+
+```dart
+// With named fields
+({String name, int age, bool isActive}) getUser() {
+  return (name: "John", age: 25, isActive: true);
+}
+
+void main() {
+  final user = getUser();
+  print(user.name);     // John
+  print(user.age);      // 25
+  print(user.isActive); // true
+}
+
+// Positional destructuring
+final (name, age, isActive) = getUser();
+print(name); // John
+print(age);  // 25
+
+// Named destructuring
+final (:name, :age, :isActive) = getUser();
+print(name); // John
+```
+
+## positional destructuring
+
+Used when the record has no named fields — just positional values.
+
+```dart
+// Record with positional fields
+(String, int, bool) getUser() {
+  return ("John", 25, true);
+}
+
+// Destructure by POSITION — order matters!
+final (age, name, isActive) = getUser();
+print(age);  // "John" ❌ wrong! got String not int
+print(name); // 25     ❌ wrong! got int not String
+```
+
+## Named Destructuring
+
+Used when the record has named fields
+
+```dart
+// Record with named fields
+({String name, int age, bool isActive}) getUser() {
+  return (name: "John", age: 25, isActive: true);
+}
+
+// Destructure by NAME — order doesn't matter!
+final (:name, :age, :isActive) = getUser();
+
+// ✅ Same result regardless of order
+final (:age, :isActive, :name) = getUser();
+print(name); // John — still correct!
+```
+
+## BuildContext in Flutter
+
+In Flutter, BuildContext is an object that represents the location of a widget in the widget tree. Every widget has its own BuildContext, which is passed automatically through the build() method
+
+```dart
+@override
+Widget build(BuildContext context) {
+  // 'context' is automatically provided here
+  return Container();
+}
+```
+
+**Important Rules to Remember:**
+
+Don't use context across async gaps without checking mounted. After an await, the widget may no longer be in the tree.
+
+Context is scoped — of(context) walks up the tree from that widget's position. If you use a context that's above a Scaffold, for example, Scaffold.of(context) will throw an error.
+You can use Builder widget to get a context that is lower in the tree when needed:
+
+```dart
+Builder(
+    builder: (innerContext) {
+      return ElevatedButton(
+        onPressed: () => Scaffold.of(innerContext).openDrawer(),
+        child: Text("Open Drawer"),
+      );
+    },
+  )
+```
+
+## How to Handle Network Errors Globally in Flutter
+
+You handle network errors at 3 levels:
+
+- **Level 1 – Dio Interceptor (Global Layer)**
+
+Using Dio interceptor to catch errors globally
+
+```dart
+class AppInterceptor extends Interceptor {
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    if (err.type == DioExceptionType.connectionTimeout ||
+        err.type == DioExceptionType.connectionError) {
+      // Handle no internet
+    }
+    if (err.response?.statusCode == 401) {
+      // Auto logout user
+    }
+    handler.next(err);
+  }
+}
+
+// attach it once
+dio.interceptors.add(AppInterceptor());
+```
+
+- **Level 2 – Repository Layer (Clean Architecture)**
+
+convert raw errors to domain-friendly failures
+
+```dart
+Future<(User?, Exception?)> getUser() async {
+  try {
+    final response = await dio.get('/user');
+    return (User.fromJson(response.data), null);
+  } catch (e) {
+    return (null, ServerFailure());
+  }
+}
+```
+
+- **Level 3 – UI Layer (Riverpod)**
+
+```dart
+ref.watch(userProvider).when(
+  data: (data) => Text(data.name),
+  loading: () => CircularProgressIndicator(),
+  error: (e, _) => Text("Something went wrong"),
+);
+```
+
+## Flutter onError Method (Global Error Handling)
+
+- FlutterError.onError (ui errors)
+- PlatformDispatcher.instance.onError (uncaught async errors)
+- runZonedGuarded (isolate errors)
+
+```dart
+void main() {
+
+  // ui errors
+  FlutterError.onError = (details) {
+    logError(details.exception, details.stack);
+  };
+  // uncaught async errors
+  PlatformDispatcher.instance.onError = (error, stack) {
+    logError(error, stack);
+    return true;
+  };
+  // for isolate errors
+  runZonedGuarded(() {
+    runApp(MyApp());
+  }, (error, stack) {
+    logError(error, stack);
+  });
+}
+```
+
+## What are consumer
+
+Used inside normal stateless/stateful widget, only this part rebuild. we get access to ref. Use Consumer for performance optimization to avoid full rebuild.
+
+```dart
+Consumer(
+  builder: (context, ref, child) {
+    final user = ref.watch(userProvider);
+    return Text(user.name);
+  },
+)
+```
+
+## What are Consumer Widget
+
+A widget that listens to providers, entire widget rebuilds when provider changes
+
+```dart
+class MyScreen extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+    return Text(user.name);
+  }
+}
+```
+
+## What is finally in try-catch
+
+finally always runs whether exception happens or not. finally ensures cleanup logic runs regardless of success or failure.
+
+```dart
+try {
+  await apiCall();
+} catch (e) {
+  print("Error");
+} finally {
+  print("Stop loader");
+}
+```
+
+**When to use?**
+
+- Stop loading indicator
+- Close database
+- Dispose controllers
+- Release resources

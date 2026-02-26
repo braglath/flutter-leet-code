@@ -24,6 +24,7 @@ void main() {
   // Arrays & Lists
   print("/// ARRAY METHODS ///");
   print('bubble sorted: ' + bubbleSort(l).toString());
+  print('n th smallest number: ' + nthSmallestNumber(l, 3).toString());
   print('removed duplicates: ' + removeDuplicate(l).toString());
   print('largest number: ' + largestNumber(l).toString());
   print('smallest number: ' + smallestNumber(l).toString());
@@ -132,6 +133,14 @@ List<int> bubbleSort(List<int> input) {
     }
   }
   return input;
+}
+
+int nthSmallestNumber(List<int> input, int n) {
+  // List<int> sorted = bubbleSort(input);
+  // return sorted[n];
+  // using flutter way
+  input.sort();
+  return input[n];
 }
 
 List<int> removeDuplicate(List<int> input) {
