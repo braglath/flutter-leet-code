@@ -1378,3 +1378,40 @@ try {
 - Close database
 - Dispose controllers
 - Release resources
+
+## provider scope override
+
+overrides are used for specific purposes
+
+```dart
+// You need overrides when:
+
+// 1. Replacing a provider in tests
+ProviderScope(
+  overrides: [
+    authSessionControllerProvider.overrideWith(() => MockAuthSessionController()),
+  ],
+  child: MyApp(),
+)
+
+// 2. Injecting platform-specific values that aren't known at compile time
+ProviderScope(
+  overrides: [
+    sharedPreferencesProvider.overrideWithValue(await SharedPreferences.getInstance()),
+  ],
+  child: MyApp(),
+)
+
+// 3. Scoping a provider to a subtree with different behavior
+// e.g. per-item state in a list
+```
+
+## @riverpod vs @Riverpod
+
+@riverpod is just a shorthand const instance of @Riverpod() with all defaults
+
+```dart
+@riverpod  // with default values
+// exactly the same as:
+@Riverpod(keepAlive: false) // used when you need to pass arguments
+```
