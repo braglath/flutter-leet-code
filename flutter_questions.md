@@ -1306,9 +1306,9 @@ ref.watch(userProvider).when(
 
 ## Flutter onError Method (Global Error Handling)
 
-- FlutterError.onError (ui errors)
-- PlatformDispatcher.instance.onError (uncaught async errors)
-- runZonedGuarded (isolate errors)
+Widget build error → FlutterError.onError
+Async/platform error → PlatformDispatcher.onError  
+Everything else → runZonedGuarded
 
 ```dart
 void main() {
@@ -1320,7 +1320,7 @@ void main() {
   // uncaught async errors
   PlatformDispatcher.instance.onError = (error, stack) {
     logError(error, stack);
-    return true;
+    return true; // true ->> error is handled, return false will crash the app
   };
   // for isolate errors
   runZonedGuarded(() {
@@ -1414,4 +1414,38 @@ ProviderScope(
 @riverpod  // with default values
 // exactly the same as:
 @Riverpod(keepAlive: false) // used when you need to pass arguments
+```
+
+## What is ShellRoute in GoRouter
+
+A ShellRoute is a route that wraps other routes with a persistent widget — think of it as a layout wrapper that stays alive while child routes change inside it. A regular GoRoute with children replaces the whole screen when navigating. A ShellRoute keeps the shell widget alive and only swaps the child inside it — the shell is never rebuilt or destroyed during navigation between its child routes.
+
+```dart
+GoRouter(
+    initialLocation: AppRoutes.splash,
+    routes: [
+      ShellRoute(
+        builder: (context, state, child) {
+          return AppListeners(child: child);
+        },
+        routes: [
+          GoRoute(
+            name: 'error-screen',
+            path: AppRoutes.errorScreen,
+            builder: (_, _) => ErrorScreen(),
+          ),
+          GoRoute(
+            name: 'splash',
+            path: AppRoutes.splash,
+            builder: (_, _) => SplashScreen(),
+          ),
+          GoRoute(
+            name: 'login',
+            path: AppRoutes.login,
+            builder: (_, _) => LoginScreen(),
+          ),
+        ],
+      ),
+    ],
+  );
 ```
