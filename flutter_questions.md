@@ -1449,3 +1449,85 @@ GoRouter(
     ],
   );
 ```
+
+## Flutter test
+
+- 70–80% Unit
+- 15–25% Widget
+- 5–10% Integration
+
+**Unit Test:**
+
+- Pure Dart login
+- Business logic
+- usecasess/repositories
+- riverpod
+- validators
+
+```dart
+void main() {
+  test('counter increments value', () {
+    final counter = Counter();
+    counter.increment();
+    expect(counter.value, 1);
+  });
+}
+```
+
+**Widget Test:**
+
+- UI rendering
+- button taps
+- text changes
+- conditional widgets
+- state updates
+
+```dart
+void main() {
+  testWidgets('tap button increments counter',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(const CounterPage());
+    // Initial value
+    expect(find.text('0'), findsOneWidget);
+    // Tap button
+    await tester.tap(find.text('Increment'));
+    await tester.pump();
+    // After tap
+    expect(find.text('1'), findsOneWidget);
+  });
+}
+```
+
+**Integration Test:**
+
+- full/partial app flow
+- real navigation
+- real widgets
+- can run on emulator/device
+- can hit real backend if needed
+
+```dart
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  testWidgets('full counter flow', (tester) async {
+    app.main();
+    await tester.pumpAndSettle();
+    expect(find.text('0'), findsOneWidget);
+    await tester.tap(find.text('Increment'));
+    await tester.pumpAndSettle();
+    expect(find.text('1'), findsOneWidget);
+  });
+}
+```
+
+## flutter test coverage
+
+```dart
+flutter test --coverage
+```
+
+- Runs all tests inside the test/ folder
+- Measures how much of your code was executed
+- Generates a coverage report file inside coverage/lcov.info
+
+Coverage = percentage of your code that is executed during tests
