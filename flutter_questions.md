@@ -962,6 +962,88 @@ Add-to-App embeds Flutter inside existing native app.
 - EventChannel
 - Pigeon (type-safe communication)
 
+## how to implement add-to-app
+
+- create flutter module, inside android root folder for easier access to path and different systems from different developers
+
+```dart
+flutter create -t module my_flutter_module
+```
+
+- inside android settings.gradle
+
+```kotlin
+setBinding(new Binding([gradle: this]))
+evaluate(new File(
+        rootDir,
+        'my_flutter_module/.android/include_flutter.groovy'
+))
+```
+
+- inside android app build.gradle under dependencies add
+
+```kotlin
+implementation(project(":flutter"))
+```
+
+- create kotlin file for flutter engine to cache
+
+```kotlin
+class MyApp : Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+
+        val flutterEngine = FlutterEngine(this)
+
+        flutterEngine.dartExecutor.executeDartEntrypoint(
+            DartExecutor.DartEntrypoint.createDefault()
+        )
+
+        FlutterEngineCache
+            .getInstance()
+            .put("main_engine", flutterEngine)
+    }
+}
+```
+
+- add the above class in AndroidManifest.xml file inside application tag
+
+```xml
+android:name=".MyApp"
+```
+
+- create kotlin class to get the cached engine
+
+```kotlin
+class MyFlutterActivity : FlutterActivity() {
+
+    override fun getCachedEngineId(): String {
+        return "main_engine"
+    }
+}
+```
+
+- add the above class in AndroidManifest.xml file inside application tag
+
+```xml
+ <activity
+            android:name=".MyFlutterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+```
+
+- in main activity add intent to start the activity
+
+```kotlin
+  val button = findViewById<Button>(R.id.openFlutterBtn)
+
+        button.setOnClickListener {
+            val intent = Intent(this, MyFlutterActivity::class.java)
+            startActivity(intent)
+        }
+```
+
 ## What challenges exist in Add-to-App?
 
 - Multiple FlutterEngine management

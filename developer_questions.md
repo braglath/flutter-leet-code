@@ -2,19 +2,24 @@
 
 ## How do you mentor junior developers
 
-- understand each develops and their knowledge and experience
+- I first assess, understand each develops and their knowledge and experience
 - assign task accordingly to above
 - ask them to walk us through the feature/task then have done
-- Code reviews with explanation
+- Code reviews with explanation and constructive feedback
+- enforce testing culture
+- encourage debugging, not dependency. instead of fixing bugs for them
 - Architecture discussions
-- Pair programming
+- weekly Pair programming (Refactor code together)
 - Documentation
+- set growth goals
+- soft skill mentoring. writing better PR, handling critical bugs calmly, communication blockers
 
 ## How do you handle disagreement in architecture decisions?
 
 - Discuss tradeoffs
 - Provide data
 - Align with business goals
+- Check if it falls within the scope
 - Document decisions
 - Stay team-focused
 
@@ -38,7 +43,7 @@ domain/
 data/
 presentation/
 
-## Tell me about a time you fixed a production outage
+## how to fix a production outage
 
 - Check logs from firebase crashlytics/ sentry, try to reproduce locally
 - assess severity (critical, major, minor), this decides urgency and release type
