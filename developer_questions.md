@@ -226,6 +226,50 @@ When providing feedback, I try to keep it constructive and educational, explaini
 
 Finally, once the comments are addressed, I do a quick re-check to ensure the changes are properly implemented before approving the pull request.
 
+I see code reviews not only as a quality control process but also as a knowledge-sharing opportunity for the entire team.
+
+## What if a developer disagrees with your code review comment?
+
+I usually encourage a short discussion so we can understand both perspectives. If the alternative approach is valid and does not violate architecture or performance standards, I’m open to adopting it. The goal is always to choose the best solution for the product, not necessarily my solution.
+
+## What do you bring to the table?
+
+I bring a combination of strong Flutter expertise, performance optimization experience, and team leadership. I have around 8 years of experience, with 7 years specializing in Flutter development.
+
+Along with development, I also contribute by mentoring junior developers, conducting structured code reviews, and establishing coding standards to improve overall code quality and maintainability. I work closely with cross-functional teams including backend, QA, and UI/UX to ensure smooth feature delivery.
+
+Overall, I try to contribute not only through technical development but also by improving engineering practices and helping the team deliver stable, high-quality applications.
+
+## What makes a good software engineer?
+
+A good software engineer not only writes functional code but also considers maintainability, scalability, and team collaboration.
+The goal is to build solutions that are easy for the entire team to understand and evolve.
+
+## How do you improve team productivity?
+
+I try to remove blockers for the team and encourage knowledge sharing through documentation and code reviews.
+Having clear coding standards also reduces confusion and speeds up development.
+
+## How do you handle legacy code?
+
+When working with legacy code, I try to avoid large refactors immediately.
+Instead I make incremental improvements while implementing new features.
+Over time this gradually improves the code quality without introducing risk.
+
+## How do you design scalable architecture?
+
+I prefer separating concerns clearly between presentation, domain, and data layers.
+Business logic should not be tightly coupled with UI.
+This structure makes the code easier to test, maintain, and extend as the application grows.
+
+## How do you ensure code quality?
+
+I ensure code quality through multiple layers.
+First we define coding standards like naming conventions, folder structure, and architecture guidelines.
+Then we enforce lint rules and static analysis.
+Code reviews are mandatory to ensure maintainability and knowledge sharing.
+For critical modules we also add unit and widget tests.
+
 ## Clean Architecture vs Feature-first — difference?
 
 **Clean Architecture:**
