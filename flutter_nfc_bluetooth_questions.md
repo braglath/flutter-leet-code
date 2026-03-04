@@ -1,10 +1,12 @@
+# Flutter based NFC bluetooth questions
+
 ## Flutter with NFC – How it Works
 
 Flutter communicates with NFC hardware using platform channels or plugins.
 Common plugin:
 nfc_manager
 
-**How NFC Works (Concept)**
+**How NFC Works (Concept):**
 
 - Phone has NFC chip
 - Tag emits radio signal
@@ -21,7 +23,7 @@ NfcManager.instance.startSession(
 <uses-permission android:name="android.permission.NFC" />
 ```
 
-**Important Points**
+**Important Points:**
 
 - NFC works only on physical device
 - Requires foreground dispatch system
@@ -92,7 +94,7 @@ Flutter → Platform Channel → Native Android/iOS → Bluetooth Stack → Devi
 
 ## Security Measures in Bluetooth Devices (Smart Lock Level Answer)
 
-**Secure Access Systems**
+**Secure Access Systems:**
 
 - BLE pairing + bonding
 - AES encrypted payload
@@ -103,7 +105,7 @@ Flutter → Platform Channel → Native Android/iOS → Bluetooth Stack → Devi
 - Timeout auto-disconnect
 - Prevent replay attacks
 
-**For smart locks**
+**For smart locks:**
 
 - Never send plain unlock command
 - Use nonce-based encryption
