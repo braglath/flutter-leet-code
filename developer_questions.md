@@ -48,6 +48,7 @@ presentation/
 - Check logs from firebase crashlytics/ sentry, try to reproduce locally
 - assess severity (critical, major, minor), this decides urgency and release type
 - (roll back temporarily) either create a hotfix branch or disable the feature via remote config/firebase remote config/server controlled flags
+- create a hotfix branch from main/master
 - fix only the specific issue
 - avoid scope creep (like refactoring unrelated code/improve architecture/updating dependencies)
 - regression protection - add test cases, test critical flows
