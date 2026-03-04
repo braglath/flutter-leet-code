@@ -6,7 +6,7 @@ Hi, my name is Braglath. I’m a Computer Science graduate with around 8 years o
 
 I started my career as a UI/UX developer, which helped me build a strong understanding of user experience and design principles. Over time, I transitioned into mobile application development, focusing mainly on Flutter and scalable mobile architectures.
 
-In my previous role at IBM, I worked on the Equitas Small Finance Bank mobile application. When our team joined the project, the application had already been developed by multiple vendors over a period of three years. Because of architectural inconsistencies and performance issues, the app was experiencing jank, screen freezes, and frequent production issues.
+In my previous role at IBM, I worked on the Equitas Small Finance Bank mobile application. When our team joined the project, the application had already been developed by multiple vendors over a period of two years. Because of architectural inconsistencies and performance issues, the app was experiencing jank, screen freezes, and frequent production issues, that could be the reason why they switched the vendor to IBM.
 
 With my Flutter experience, I took the initiative to analyze the application performance and worked closely with the team to refactor key parts of the codebase, optimize widget rebuilds, and improve state management practices. As a result, we were able to improve the app performance by around 40% and eliminate most of the UI lag and freezing issues.
 
@@ -17,6 +17,115 @@ As part of the leadership role, I introduced code quality guidelines, regular ar
 The application was successfully released to production, and since it was an internal staff application, we distributed it using Firebase App Distribution for controlled APK distribution to different teams.
 
 Overall, I enjoy building high-quality mobile applications, improving performance, and mentoring team members, and I’m currently looking for opportunities where I can contribute to scalable mobile products and technical leadership.
+
+## Can you explain the code quality guidelines you introduced?
+
+When I joined the project, the codebase had contributions from multiple vendors, which resulted in inconsistent coding styles, different architectural patterns, and increased technical debt. This was also contributing to performance issues and production bugs.
+
+To address this, I introduced a set of code quality guidelines for the Flutter team to ensure consistency and maintainability across the project.
+
+1. Architecture Guidelines
+
+Enforced clear separation of layers such as presentation, domain, and data.
+
+Business logic should not exist inside UI widgets.
+
+Repository pattern for API and data access.
+
+This helps:
+✔ Maintainability
+✔ Easier testing
+✔ Cleaner codebase
+
+2. State Management Standards
+
+Standardized how state management should be used across the project.
+
+Avoid placing complex logic inside UI widgets.
+
+Ensure predictable state updates.
+
+This eliminates:
+✔ Unnecessary widget rebuilds
+✔ Hard-to-debug UI issues
+
+3. Widget Structure and Performance
+
+Guidelines included:
+
+Use const widgets where possible
+
+Avoid deep widget trees where unnecessary
+
+Use RepaintBoundary when needed
+
+Avoid heavy work inside the build method
+
+This improves:
+✔ Rendering performance
+✔ Reduces UI jank
+
+4. Code Review Practices
+
+I introduced structured code reviews where we check for:
+
+Architecture violations
+
+Naming conventions
+
+Performance issues
+
+Error handling
+
+This ensures multiple developers validate the code before merging.
+
+5. Error Handling and Logging
+
+Guidelines included:
+
+Proper exception handling
+
+Avoid silent failures
+
+Log critical errors
+
+This helps:
+✔ Faster debugging
+✔ Better production monitoring
+
+6. Testing Standards
+
+Encouraged developers to include:
+
+Unit tests for business logic
+
+Widget tests for UI behavior
+
+This improves confidence during releases.
+
+7. Documentation
+
+Developers were encouraged to:
+
+Document complex logic
+
+Write meaningful PR descriptions
+
+This helps new team members understand the system faster.
+
+What problems these guidelines solved
+
+The guidelines helped us:
+
+✔ Remove code inconsistencies
+✔ Reduce technical debt
+✔ Improve app performance
+✔ Reduce production bugs
+✔ Make onboarding much easier for new developers
+
+Strong closing line
+
+Overall, the goal of these guidelines was to ensure that even with multiple developers contributing to the project, the codebase remained consistent, maintainable, and scalable.
 
 ## Tell me about a performance improvement you implemented
 
