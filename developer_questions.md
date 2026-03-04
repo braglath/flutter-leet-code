@@ -6,124 +6,51 @@ Hi, my name is Braglath. I’m a Computer Science graduate with around 8 years o
 
 I started my career as a UI/UX developer, which helped me build a strong understanding of user experience and design principles. Over time, I transitioned into mobile application development, focusing mainly on Flutter and scalable mobile architectures.
 
-In my previous role at IBM, I worked on the Equitas Small Finance Bank mobile application. When our team joined the project, the application had already been developed by multiple vendors over a period of two years. Because of architectural inconsistencies and performance issues, the app was experiencing jank, screen freezes, and frequent production issues, that could be the reason why they switched the vendor to IBM.
+In my previous role at IBM, I worked on the Equitas Small Finance Bank mobile application. When our team joined the project, the application had already been developed by multiple vendors over a period of two years. Because of architectural inconsistencies and performance issues, the app was experiencing jank, screen freezes, and frequent production issues.
 
 With my Flutter experience, I took the initiative to analyze the application performance and worked closely with the team to refactor key parts of the codebase, optimize widget rebuilds, and improve state management practices. As a result, we were able to improve the app performance by around 40% and eliminate most of the UI lag and freezing issues.
 
 Based on this work, I was given the opportunity to lead the Flutter team in developing a new internal staff application for the bank. I was involved throughout the entire development lifecycle — from requirement discussions with business analysts, collaborating with UI/UX designers, development, testing, and finally production release.
 
-As part of the leadership role, I introduced code quality guidelines, regular architecture discussions, and mentoring sessions for junior developers through code reviews and pair programming. We also followed agile practices with daily stand-ups and sprint planning sessions to ensure smooth collaboration.
+As part of the leadership role, I introduced code quality guidelines, regular architecture discussions, and mentoring sessions for junior developers through code reviews and pair programming. We also followed agile practices with daily stand-ups to ensure smooth collaboration.
 
 The application was successfully released to production, and since it was an internal staff application, we distributed it using Firebase App Distribution for controlled APK distribution to different teams.
 
-Overall, I enjoy building high-quality mobile applications, improving performance, and mentoring team members, and I’m currently looking for opportunities where I can contribute to scalable mobile products and technical leadership.
+Overall, I enjoy building highly maintainable, scalable and high-quality mobile applications, improving performance, and mentoring team members.
 
 ## Can you explain the code quality guidelines you introduced?
 
-When I joined the project, the codebase had contributions from multiple vendors, which resulted in inconsistent coding styles, different architectural patterns, and increased technical debt. This was also contributing to performance issues and production bugs.
+When I joined the project, the codebase had contributions from multiple vendors, which resulted in inconsistent coding styles, different architectural patterns. This was also contributing to performance issues and production bugs.
 
 To address this, I introduced a set of code quality guidelines for the Flutter team to ensure consistency and maintainability across the project.
 
-1. Architecture Guidelines
-
 Enforced clear separation of layers such as presentation, domain, and data.
 
-Business logic should not exist inside UI widgets.
+feature based folder structure
 
 Repository pattern for API and data access.
 
-This helps:
-✔ Maintainability
-✔ Easier testing
-✔ Cleaner codebase
+Business logic should not exist inside UI widgets.
 
-2. State Management Standards
+Proper exception and edge case handling
 
-Standardized how state management should be used across the project.
-
-Avoid placing complex logic inside UI widgets.
-
-Ensure predictable state updates.
-
-This eliminates:
-✔ Unnecessary widget rebuilds
-✔ Hard-to-debug UI issues
-
-3. Widget Structure and Performance
-
-Guidelines included:
+Standardized how state management should be used.
 
 Use const widgets where possible
 
-Avoid deep widget trees where unnecessary
-
-Use RepaintBoundary when needed
+refractor bigger widgets into smaller widgets
 
 Avoid heavy work inside the build method
 
-This improves:
-✔ Rendering performance
-✔ Reduces UI jank
+Naming conventions (class -> pascal case, variables -> lowerCamelCase, folder -> snake_case)
 
-4. Code Review Practices
+disposing of controllers
 
-I introduced structured code reviews where we check for:
-
-Architecture violations
-
-Naming conventions
-
-Performance issues
-
-Error handling
-
-This ensures multiple developers validate the code before merging.
-
-5. Error Handling and Logging
-
-Guidelines included:
-
-Proper exception handling
-
-Avoid silent failures
-
-Log critical errors
-
-This helps:
-✔ Faster debugging
-✔ Better production monitoring
-
-6. Testing Standards
-
-Encouraged developers to include:
-
-Unit tests for business logic
-
-Widget tests for UI behavior
-
-This improves confidence during releases.
-
-7. Documentation
-
-Developers were encouraged to:
+Encouraged developers to include: Unit, Widget and Integration testing
 
 Document complex logic
 
 Write meaningful PR descriptions
-
-This helps new team members understand the system faster.
-
-What problems these guidelines solved
-
-The guidelines helped us:
-
-✔ Remove code inconsistencies
-✔ Reduce technical debt
-✔ Improve app performance
-✔ Reduce production bugs
-✔ Make onboarding much easier for new developers
-
-Strong closing line
 
 Overall, the goal of these guidelines was to ensure that even with multiple developers contributing to the project, the codebase remained consistent, maintainable, and scalable.
 
@@ -175,9 +102,9 @@ Another important aspect is encouraging independent problem-solving. Instead of 
 
 I also conduct regular architecture discussions and pair programming sessions, where we sometimes refactor code together and discuss better design patterns.
 
-Beyond technical skills, I help them develop soft skills, such as writing clear pull requests, communicating effectively with the team, and staying calm while handling production issues.
+Beyond technical skills, I also help them develop soft skills, such as writing clear pull requests and communicating effectively with the team.
 
-Overall, my goal is to help them grow into developers who can write quality code, think critically, and collaborate effectively with the team.
+Overall, my goal is to help them grow into developers who can write quality, maintainable and scalable code, think critically, and collaborate effectively with the team.
 
 ## How do you handle disagreement in architecture decisions?
 
@@ -200,54 +127,28 @@ Once the team agrees on the approach, I make sure we document the architectural 
 
 Overall, my goal is to ensure the final decision is best for the product and the team, even if it’s not necessarily my original proposal.
 
-## Clean Architecture vs Feature-first — difference?
-
-**Clean Architecture:**
-
-- Layer separation (domain/data/presentation)
-
-**Feature-first:**
-
-- Organized per feature
-
-**Best approach:**
-
-- Combine both.
-
-features/
-login/
-domain/
-data/
-presentation/
-
 ## how to fix a production outage
 
 - Check logs from firebase crashlytics/ sentry, try to reproduce locally
 - assess severity (critical, major, minor), this decides urgency and release type
-- (roll back temporarily) either create a hotfix branch or disable the feature via remote config/firebase remote config/server controlled flags
+- (roll back temporarily) disable the feature via remote config/firebase remote config/server controlled flags
 - create a hotfix branch from main/master
 - fix only the specific issue
 - avoid scope creep (like refactoring unrelated code/improve architecture/updating dependencies)
 - regression protection - add test cases, test critical flows
 - add logging
-- coder review
+- code review
 - testing
 - release patch version (use staged rollout if possible)
 - monitor crash and analytics
 
-**You can add:**
-
-- “We also conduct a root cause analysis after resolution.”
-- “We update documentation to prevent similar bugs.”
-- “We improve monitoring if detection was delayed.”
-
 When a production outage happens, my first priority is to understand the issue quickly and minimize the impact on users.
 
-First, I check monitoring tools such as Firebase Crashlytics or Sentry to analyze crash logs and error reports. I try to reproduce the issue locally so I can identify the root cause.
+First, I check monitoring tools such as Firebase Crashlytics or Sentry to analyze error reports. I try to reproduce the issue locally so I can identify the root cause.
 
 Next, I assess the severity of the issue — whether it is critical, major, or minor — because that determines how urgently we need to act and whether we need an immediate patch release.
 
-If the issue is severely impacting users, we may take a temporary mitigation step, such as disabling the problematic feature using remote configuration or server-controlled feature flags, or rolling back the recent release if possible.
+If the issue is severely impacting users, we may take a temporary mitigation step, such as disabling the problematic feature using remote configuration or server-controlled feature flags.
 
 Once the root cause is identified, I create a hotfix branch from the main branch and focus only on fixing the specific issue. During this stage, I avoid making unrelated changes such as refactoring or dependency updates to reduce risk.
 
@@ -256,6 +157,12 @@ After implementing the fix, we perform code review and thorough testing, especia
 The fix is then released as a patch version, ideally using staged rollout so we can monitor crash rates and analytics before rolling it out to all users.
 
 Finally, we continue monitoring Crashlytics and analytics dashboards to confirm the issue is resolved and that no new problems appear.
+
+additionally
+
+- “We also conduct a root cause analysis.”
+- “We update documentation to prevent similar bugs.”
+- “We improve monitoring if detection was delayed.”
 
 ## Client wants a new feature. How do you come up with the timeline?
 
@@ -300,3 +207,41 @@ At the same time, I try to maintain code quality and proper testing, because rus
 Overall, I believe staying calm, prioritizing effectively, and maintaining clear communication helps the team deliver successfully even under pressure.
 
 For example, during the Equitas banking app project, we had to resolve several performance issues within a limited timeline before a release. By prioritizing performance fixes, coordinating closely with the team, and focusing on the most impactful improvements first, we were able to significantly improve the app performance before the release.
+
+## How do you conduct code reviews?
+
+When conducting code reviews, my goal is not just to find issues but to improve code quality and help the team learn best practices.
+
+First, I review the overall design and architecture to ensure the implementation aligns with the project’s architecture guidelines and does not introduce unnecessary complexity.
+
+Next, I check the readability and maintainability of the code, such as proper naming conventions, modular functions, and clear separation of responsibilities.
+
+I also review the code for performance considerations, especially in Flutter applications, ensuring there are no unnecessary widget rebuilds, heavy operations inside the build method, or inefficient data handling.
+
+Another important aspect I check is error handling and edge cases, making sure the code handles failures gracefully rather than causing unexpected crashes.
+
+I also verify whether test cases are included where appropriate, especially for business logic.
+
+When providing feedback, I try to keep it constructive and educational, explaining why a certain approach may be better rather than simply asking the developer to change it.
+
+Finally, once the comments are addressed, I do a quick re-check to ensure the changes are properly implemented before approving the pull request.
+
+## Clean Architecture vs Feature-first — difference?
+
+**Clean Architecture:**
+
+- Layer separation (domain/data/presentation)
+
+**Feature-first:**
+
+- Organized per feature
+
+**Best approach:**
+
+- Combine both.
+
+features/
+login/
+domain/
+data/
+presentation/
