@@ -196,9 +196,9 @@ This approach helps provide a realistic and reliable timeline while maintaining 
 
 When working under pressure, I focus on staying organized and prioritizing the most critical tasks first.
 
-The first thing I do is clearly understand the scope and urgency of the task. I break the work into smaller, manageable tasks so the team can focus on solving one problem at a time.
+The first thing I do is clearly understand the scope. I break the work into smaller, manageable tasks so the team can focus on solving one problem at a time.
 
-Next, I prioritize tasks based on business impact, ensuring that the most critical functionality is delivered first. I also identify tasks that can be done in parallel by different team members to speed up delivery.
+Next, I prioritize tasks based on business impact, ensuring that the most critical functionality is delivered first. And I also identify tasks that can be done in parallel by different team members to speed up delivery.
 
 Communication is also very important during high-pressure situations. I make sure the team and stakeholders are aligned on progress, risks, and timelines, so expectations remain realistic.
 
@@ -210,15 +210,15 @@ Overall, I believe staying calm, prioritizing effectively, and maintaining clear
 
 When conducting code reviews, my goal is not just to find issues but to improve code quality and help the team learn best practices.
 
-First, I review the overall design and architecture to ensure the implementation aligns with the project’s architecture guidelines and does not introduce unnecessary complexity.
+First, I review the overall design and architecture to ensure the implementation aligns with the project’s architecture guidelines.
 
-Next, I check the readability and maintainability of the code, such as proper naming conventions, modular functions, and clear separation of responsibilities.
+Next, I check the readability and maintainability of the code, such as proper naming conventions, modular functions, and clear separation of layers.
 
-I also review the code for performance considerations, especially in Flutter applications, ensuring there are no unnecessary widget rebuilds, heavy operations inside the build method, or inefficient data handling.
+I also review the code for performance optimization, ensuring there are no unnecessary widget rebuilds, heavy operations inside the build method, or inefficient data handling.
 
-Another important aspect I check is error handling and edge cases, making sure the code handles failures gracefully rather than causing unexpected crashes.
+Another important aspect I check is error handling and edge cases, making sure the code handles failures gracefully.
 
-I also verify whether test cases are included where appropriate, especially for business logic.
+I also verify whether test cases are included, and the test coverage should be above 80%.
 
 When providing feedback, I try to keep it constructive and educational, explaining why a certain approach may be better rather than simply asking the developer to change it.
 
@@ -245,8 +245,8 @@ The goal is to build solutions that are easy for the entire team to understand a
 
 ## How do you improve team productivity?
 
-I try to remove blockers for the team and encourage knowledge sharing through documentation and code reviews.
-Having clear coding standards also reduces confusion and speeds up development.
+I try to remove blockers for the team and encourage knowledge sharing through documentation, code reviews and also pair programming sessions.
+Having clear coding standards and guidelines to follow reduces confusion and speeds up development.
 
 ## How do you handle legacy code?
 
