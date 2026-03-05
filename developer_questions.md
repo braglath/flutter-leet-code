@@ -1,6 +1,6 @@
 # Developer related questions
 
-## Tell me about yourself (Improved Answer)
+## Tell me about yourself
 
 Hi, my name is Braglath. I’m a Computer Science graduate with around 8 years of overall experience, including 7 years specializing in Flutter development.
 
@@ -106,7 +106,7 @@ Beyond technical skills, I also help them develop soft skills, such as writing c
 
 Overall, my goal is to help them grow into developers who can write quality, maintainable and scalable code, think critically, and collaborate effectively with the team.
 
-## How do you handle disagreement in architecture decisions?
+## How do you handle disagreement?
 
 - Discuss tradeoffs
 - Provide data
@@ -115,7 +115,7 @@ Overall, my goal is to help them grow into developers who can write quality, mai
 - Document decisions
 - Stay team-focused
 
-When there is a disagreement in architecture decisions, my approach is to keep the discussion technical and team-focused rather than personal.
+When there is a disagreement, my approach is to keep the discussion technical and team-focused rather than personal.
 
 First, I encourage the team to discuss the trade-offs of each approach, including scalability, maintainability, performance, and development effort.
 
@@ -196,17 +196,15 @@ This approach helps provide a realistic and reliable timeline while maintaining 
 
 When working under pressure, I focus on staying organized and prioritizing the most critical tasks first.
 
-The first thing I do is clearly understand the scope and urgency of the task, especially if there are strict deadlines or production issues involved. I break the work into smaller, manageable tasks so the team can focus on solving one problem at a time.
+The first thing I do is clearly understand the scope and urgency of the task. I break the work into smaller, manageable tasks so the team can focus on solving one problem at a time.
 
-Next, I prioritize tasks based on business impact, ensuring that the most critical functionality is delivered first. If needed, I also identify tasks that can be done in parallel by different team members to speed up delivery.
+Next, I prioritize tasks based on business impact, ensuring that the most critical functionality is delivered first. I also identify tasks that can be done in parallel by different team members to speed up delivery.
 
 Communication is also very important during high-pressure situations. I make sure the team and stakeholders are aligned on progress, risks, and timelines, so expectations remain realistic.
 
 At the same time, I try to maintain code quality and proper testing, because rushing changes without validation can create more problems later.
 
 Overall, I believe staying calm, prioritizing effectively, and maintaining clear communication helps the team deliver successfully even under pressure.
-
-For example, during the Equitas banking app project, we had to resolve several performance issues within a limited timeline before a release. By prioritizing performance fixes, coordinating closely with the team, and focusing on the most impactful improvements first, we were able to significantly improve the app performance before the release.
 
 ## How do you conduct code reviews?
 
