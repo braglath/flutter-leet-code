@@ -489,6 +489,28 @@ class Box<T> {
 }
 ```
 
+## Generics restriction in flutter
+
+Dart (and Flutter) supports generic type constraints, similar to Kotlin’s T : FoodItem. In Dart you use the keyword extends to restrict the generic type.
+
+```dart
+class CartManager {
+  void addFoodItemToCart<T extends FoodItem>(T item) {
+    print(item);
+  }
+}
+
+class FoodItem {}
+
+class Beverages extends FoodItem {}
+
+void main() {
+  final cartManager = CartManager();
+  cartManager.addFoodItemToCart(Beverages());
+  cartManager.addFoodItemToCart("Dhal Rice"); // does not work
+}
+```
+
 ## How to Implement Concurrency in Flutter
 
 - Async/Await
